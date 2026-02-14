@@ -232,6 +232,36 @@ export default function GardenPage() {
             </div>
           )}
 
+          {/* Load more button */}
+          {status === "CanLoadMore" && (
+            <div className="mt-14 flex justify-center sm:mt-16">
+              <button
+                onClick={() => loadMore(20)}
+                className="border border-charcoal/15 px-10 py-3.5 font-mono text-[10px] uppercase tracking-[0.3em] text-charcoal/60 transition-all duration-300 hover:border-charcoal/30 hover:text-charcoal"
+              >
+                Load More
+              </button>
+            </div>
+          )}
+          {status === "LoadingMore" && (
+            <div className="mt-14 flex justify-center sm:mt-16">
+              <div className="flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <div
+                      key={i}
+                      className="h-1.5 w-1.5 rounded-full bg-charcoal/20 animate-pulse"
+                      style={{ animationDelay: `${i * 200}ms` }}
+                    />
+                  ))}
+                </div>
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-charcoal/40">
+                  Loading...
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Footer navigation */}
           <div className="mt-20 flex flex-col items-center gap-8 sm:mt-28">
             {/* Divider */}

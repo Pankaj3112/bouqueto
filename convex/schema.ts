@@ -11,11 +11,9 @@ export default defineSchema({
     ),
     arrangement: v.array(
       v.object({
-        x: v.number(),
-        y: v.number(),
-        rotation: v.number(),
-        scale: v.number(),
         flowerId: v.string(),
+        order: v.number(),
+        rotation: v.number(),
       })
     ),
     greeneryStyle: v.string(),

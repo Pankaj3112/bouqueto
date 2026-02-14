@@ -1,12 +1,10 @@
 "use client";
 
-import type { ArrangementItem, FlowerSelection, GreeneryItem } from "@/lib/arrangement";
+import type { ArrangementItem } from "@/lib/arrangement";
 import BouquetComposition from "@/components/BouquetComposition";
 
 interface BouquetCustomizerProps {
-  selectedFlowers: FlowerSelection[];
   arrangement: ArrangementItem[];
-  greenery: GreeneryItem[];
   greeneryStyle: string;
   onNewArrangement: () => void;
   onChangeGreenery: () => void;
@@ -15,9 +13,7 @@ interface BouquetCustomizerProps {
 }
 
 export default function BouquetCustomizer({
-  selectedFlowers,
   arrangement,
-  greenery,
   greeneryStyle,
   onNewArrangement,
   onChangeGreenery,
@@ -68,7 +64,7 @@ export default function BouquetCustomizer({
 
       {/* Bouquet composition preview */}
       <div className="mx-auto max-w-md">
-        <BouquetComposition arrangement={arrangement} greenery={greenery} />
+        <BouquetComposition arrangement={arrangement} greeneryStyle={greeneryStyle} />
       </div>
 
       {/* Section divider */}

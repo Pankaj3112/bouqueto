@@ -82,13 +82,6 @@ export default function Home() {
             Build a Bouquet
           </Link>
 
-          {/* Secondary CTA */}
-          <Link
-            href="/bouquet"
-            className="block w-full border-2 border-charcoal bg-transparent py-4 text-center font-mono text-xs uppercase tracking-[0.3em] text-charcoal transition-colors duration-200 hover:bg-charcoal hover:text-cream"
-          >
-            Build It in Black &amp; White
-          </Link>
         </div>
 
         {/* View Garden link */}
@@ -103,7 +96,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="pb-6 pt-8">
         <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-charcoal/50">
-          Made by @pankajbeniwal
+          Made by <a href="https://github.com/Pankaj3112" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 transition-opacity duration-200 hover:opacity-60">@pankajbeniwal</a>
         </p>
       </footer>
     </div>

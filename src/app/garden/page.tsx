@@ -4,8 +4,6 @@ import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import BouquetComposition from "@/components/BouquetComposition";
-import { generateGreenery } from "@/lib/arrangement";
-import { greenerySets } from "@/data/greenery";
 import type { ArrangementItem } from "@/lib/arrangement";
 
 /**
@@ -17,27 +15,18 @@ function BouquetCard({
 }: {
   bouquet: {
     _id: string;
-    arrangement: { x: number; y: number; rotation: number; scale: number; flowerId: string }[];
+    arrangement: { flowerId: string; order: number; rotation: number }[];
     greeneryStyle: string;
     cardMessage: string;
     createdAt: number;
   };
 }) {
-  // Reconstruct arrangement with zIndex
-  const arrangement: ArrangementItem[] = bouquet.arrangement.map((item, i) => ({
-    ...item,
-    zIndex: 10 + i,
+  // Reconstruct arrangement from saved data
+  const arrangement: ArrangementItem[] = bouquet.arrangement.map((item) => ({
+    flowerId: item.flowerId,
+    order: item.order,
+    rotation: item.rotation,
   }));
-
-  // Regenerate greenery from saved style
-  const greenerySet = greenerySets.find((s) => s.id === bouquet.greeneryStyle);
-  const greenery = greenerySet ? generateGreenery(greenerySet.images) : [];
-
-  // Truncated message preview
-  const messagePreview =
-    bouquet.cardMessage && bouquet.cardMessage.length > 50
-      ? bouquet.cardMessage.slice(0, 50) + "\u2026"
-      : bouquet.cardMessage;
 
   return (
     <Link
@@ -49,22 +38,9 @@ function BouquetCard({
         <div className="border border-charcoal/[0.06] p-2">
           {/* Bouquet preview — constrained to a small square */}
           <div className="pointer-events-none relative mx-auto aspect-square w-full max-w-[240px] overflow-hidden">
-            <BouquetComposition arrangement={arrangement} greenery={greenery} />
+            <BouquetComposition arrangement={arrangement} greeneryStyle={bouquet.greeneryStyle} />
           </div>
 
-          {/* Card message preview */}
-          {messagePreview && (
-            <>
-              <div className="mt-3 flex items-center gap-2" aria-hidden="true">
-                <span className="block h-px flex-1 bg-charcoal/8" />
-                <span className="block h-0.5 w-0.5 rounded-full bg-charcoal/15" />
-                <span className="block h-px flex-1 bg-charcoal/8" />
-              </div>
-              <p className="mt-3 text-center font-display text-sm italic leading-relaxed text-charcoal/60 transition-colors duration-200 group-hover:text-charcoal/80">
-                &ldquo;{messagePreview}&rdquo;
-              </p>
-            </>
-          )}
         </div>
 
         {/* Subtle corner accent on hover */}
@@ -214,7 +190,7 @@ export default function GardenPage() {
 
           {/* Footer credit */}
           <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.3em] text-charcoal/30">
-            Made by @pankajbeniwal
+            Made by <a href="https://github.com/Pankaj3112" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 transition-opacity duration-200 hover:opacity-60">@pankajbeniwal</a>
           </p>
         </div>
       </div>

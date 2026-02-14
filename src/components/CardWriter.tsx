@@ -286,7 +286,8 @@ export default function CardWriter({
         <button
           type="button"
           onClick={onNext}
-          className="w-full max-w-[200px] bg-charcoal py-4 text-center font-mono text-xs uppercase tracking-[0.3em] text-cream transition-opacity duration-200 hover:opacity-80"
+          disabled={cardMessage.trim().length === 0}
+          className="w-full max-w-[200px] bg-charcoal py-4 text-center font-mono text-xs uppercase tracking-[0.3em] text-cream transition-opacity duration-200 hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Send Bouquet
         </button>

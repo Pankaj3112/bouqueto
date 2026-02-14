@@ -1,27 +1,15 @@
-// Pure arrangement algorithm for generating flower and greenery positions.
-// All coordinates use percentages (0-100) for responsive layout.
+// Pure arrangement algorithm for generating flower order and rotation.
+// Uses flex-wrap layout (positioning handled by CSS, not JS).
 
 export interface ArrangementItem {
-  x: number; // percentage 0-100
-  y: number; // percentage 0-100
-  rotation: number; // degrees
-  scale: number;
   flowerId: string;
-  zIndex: number;
+  order: number;
+  rotation: number; // degrees, -5 to +5
 }
 
 export interface FlowerSelection {
   flowerId: string;
   count: number;
-}
-
-export interface GreeneryItem {
-  x: number; // percentage 0-100
-  y: number; // percentage 0-100
-  rotation: number; // degrees
-  scale: number;
-  image: string;
-  zIndex: number;
 }
 
 // Seeded pseudo-random number generator (mulberry32) for deterministic layouts.
@@ -46,18 +34,16 @@ function selectionSeed(selections: FlowerSelection[]): number {
   return hash;
 }
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
-
 /**
- * Generate a tight dome-shaped arrangement of flowers.
+ * Generate arrangement items with randomized order and subtle rotation.
+ * The flex-wrap CSS layout handles spatial positioning — this just
+ * controls the visual order and per-flower rotation.
  *
- * Flowers are placed in a tight overlapping cluster centered in the
- * upper-center area of the composition, sitting on top of the greenery bush.
+ * Pass a non-zero `extraSeed` to get a different arrangement variation.
  */
 export function generateArrangement(
   selections: FlowerSelection[],
+  extraSeed: number = 0,
 ): ArrangementItem[] {
   const expanded: string[] = [];
   for (const s of selections) {
@@ -68,69 +54,18 @@ export function generateArrangement(
 
   if (expanded.length === 0) return [];
 
-  const rng = createRng(selectionSeed(selections));
+  const rng = createRng(selectionSeed(selections) + extraSeed);
 
-  const centerX = 50;
-  const centerY = 40; // upper-center, above the bush base
-
-  const items: ArrangementItem[] = [];
-
-  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-
-  for (let i = 0; i < expanded.length; i++) {
-    const baseAngle = i * goldenAngle;
-    const angleJitter = (rng() - 0.5) * 0.6;
-    const angle = baseAngle + angleJitter;
-
-    // Tight radius: 0-18% from center so flowers overlap heavily
-    const t = expanded.length === 1 ? 0 : i / (expanded.length - 1);
-    const baseRadius = 2 + Math.sqrt(t) * 16;
-    const radiusJitter = (rng() - 0.5) * 4;
-    const radius = Math.max(0, baseRadius + radiusJitter);
-
-    const rawX = centerX + Math.cos(angle) * radius;
-    const rawY = centerY + Math.sin(angle) * radius * 0.75; // slight vertical squash
-
-    const x = clamp(rawX, 15, 85);
-    const y = clamp(rawY, 10, 75);
-
-    const rotation = (rng() - 0.5) * 30; // -15 to +15 degrees (subtler rotation)
-    const scale = 0.85 + rng() * 0.3; // 0.85 to 1.15
-
-    items.push({
-      x,
-      y,
-      rotation,
-      scale,
-      flowerId: expanded[i],
-      zIndex: 10 + i,
-    });
+  // Create shuffled order indices via Fisher-Yates
+  const orders = expanded.map((_, i) => i);
+  for (let i = orders.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [orders[i], orders[j]] = [orders[j], orders[i]];
   }
 
-  return items;
-}
-
-/**
- * Generate greenery — a single centered bush background image,
- * matching how the original Digibouquet renders greenery.
- * Returns a single item positioned at center-bottom.
- */
-export function generateGreenery(images: string[]): GreeneryItem[] {
-  if (images.length === 0) return [];
-
-  const rng = createRng(42);
-
-  // Pick one bush image as the main background
-  const mainBush = images[Math.floor(rng() * images.length)];
-
-  return [
-    {
-      x: 50,
-      y: 50,
-      rotation: 0,
-      scale: 1,
-      image: mainBush,
-      zIndex: 1,
-    },
-  ];
+  return expanded.map((flowerId, i) => ({
+    flowerId,
+    order: orders[i],
+    rotation: Math.round((rng() - 0.5) * 10), // -5 to +5 degrees
+  }));
 }

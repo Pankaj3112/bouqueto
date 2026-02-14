@@ -6,7 +6,3 @@
   --font-display: var(--font-display);
   --font-mono: var(--font-mono);
 }
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}

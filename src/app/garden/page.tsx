@@ -162,15 +162,6 @@ export default function GardenPage() {
               Recent bouquets from around the world
             </p>
 
-            {/* Bouquet count badge */}
-            {results.length > 0 && (
-              <div className="mt-6 inline-flex items-center gap-2 border border-charcoal/[0.08] px-4 py-1.5">
-                <span className="block h-1.5 w-1.5 rounded-full bg-charcoal/20" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-charcoal/35">
-                  {results.length} {results.length === 1 ? "Bouquet" : "Bouquets"}
-                </span>
-              </div>
-            )}
           </header>
 
           {/* Loading state */}

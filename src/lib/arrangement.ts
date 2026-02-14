@@ -25,8 +25,6 @@ export interface GreeneryItem {
 }
 
 // Seeded pseudo-random number generator (mulberry32) for deterministic layouts.
-// This ensures the same selections always produce the same arrangement,
-// avoiding layout shifts on re-renders.
 function createRng(seed: number) {
   let state = seed | 0;
   return () => {
@@ -37,8 +35,6 @@ function createRng(seed: number) {
   };
 }
 
-// Derive a stable seed from selections so the same input always
-// produces the same arrangement.
 function selectionSeed(selections: FlowerSelection[]): number {
   let hash = 0;
   for (const s of selections) {
@@ -55,15 +51,14 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 /**
- * Generate a dome-shaped arrangement of flowers.
+ * Generate a tight dome-shaped arrangement of flowers.
  *
- * Flowers are distributed in a circular cluster centered at roughly (50%, 45%)
- * with a vertical squash factor to create a dome / half-sphere look.
+ * Flowers are placed in a tight overlapping cluster centered in the
+ * upper-center area of the composition, sitting on top of the greenery bush.
  */
 export function generateArrangement(
   selections: FlowerSelection[],
 ): ArrangementItem[] {
-  // Expand selections into individual flower instances
   const expanded: string[] = [];
   for (const s of selections) {
     for (let i = 0; i < s.count; i++) {
@@ -76,36 +71,31 @@ export function generateArrangement(
   const rng = createRng(selectionSeed(selections));
 
   const centerX = 50;
-  const centerY = 45;
-  const verticalSquash = 0.7;
+  const centerY = 40; // upper-center, above the bush base
 
   const items: ArrangementItem[] = [];
 
-  // Use golden-angle distribution for a natural-looking spiral,
-  // with added randomness so it doesn't look mechanical.
-  const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ~137.5 degrees
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 
   for (let i = 0; i < expanded.length; i++) {
-    // Base angle from golden-angle spiral + randomness
     const baseAngle = i * goldenAngle;
-    const angleJitter = (rng() - 0.5) * 0.8; // +/- ~23 degrees
+    const angleJitter = (rng() - 0.5) * 0.6;
     const angle = baseAngle + angleJitter;
 
-    // Radius: distribute from inner to outer, range 15-30% from center
-    // Use square-root distribution so flowers aren't all bunched in center
+    // Tight radius: 0-18% from center so flowers overlap heavily
     const t = expanded.length === 1 ? 0 : i / (expanded.length - 1);
-    const baseRadius = 15 + Math.sqrt(t) * 15;
-    const radiusJitter = (rng() - 0.5) * 6; // +/- 3% randomness
-    const radius = baseRadius + radiusJitter;
+    const baseRadius = 2 + Math.sqrt(t) * 16;
+    const radiusJitter = (rng() - 0.5) * 4;
+    const radius = Math.max(0, baseRadius + radiusJitter);
 
     const rawX = centerX + Math.cos(angle) * radius;
-    const rawY = centerY + Math.sin(angle) * radius * verticalSquash;
+    const rawY = centerY + Math.sin(angle) * radius * 0.75; // slight vertical squash
 
-    const x = clamp(rawX, 5, 95);
-    const y = clamp(rawY, 5, 95);
+    const x = clamp(rawX, 15, 85);
+    const y = clamp(rawY, 10, 75);
 
-    const rotation = (rng() - 0.5) * 60; // -30 to +30 degrees
-    const scale = 0.8 + rng() * 0.4; // 0.8 to 1.2
+    const rotation = (rng() - 0.5) * 30; // -15 to +15 degrees (subtler rotation)
+    const scale = 0.85 + rng() * 0.3; // 0.85 to 1.15
 
     items.push({
       x,
@@ -113,7 +103,7 @@ export function generateArrangement(
       rotation,
       scale,
       flowerId: expanded[i],
-      zIndex: 10 + i, // ascending z-index, starts above greenery
+      zIndex: 10 + i,
     });
   }
 
@@ -121,50 +111,26 @@ export function generateArrangement(
 }
 
 /**
- * Generate greenery pieces that sit behind the flowers.
- *
- * Produces 6-9 pieces distributed in a circle at a wider radius,
- * giving the effect of leaves peeking out from behind the bouquet.
+ * Generate greenery — a single centered bush background image,
+ * matching how the original Digibouquet renders greenery.
+ * Returns a single item positioned at center-bottom.
  */
 export function generateGreenery(images: string[]): GreeneryItem[] {
   if (images.length === 0) return [];
 
-  // Use a fixed seed for greenery so it's stable
   const rng = createRng(42);
 
-  const count = 6 + Math.floor(rng() * 4); // 6-9 pieces
-  const centerX = 50;
-  const centerY = 45;
+  // Pick one bush image as the main background
+  const mainBush = images[Math.floor(rng() * images.length)];
 
-  const items: GreeneryItem[] = [];
-
-  for (let i = 0; i < count; i++) {
-    // Distribute evenly around a circle with some randomness
-    const baseAngle = (i / count) * Math.PI * 2;
-    const angleJitter = (rng() - 0.5) * 0.6;
-    const angle = baseAngle + angleJitter;
-
-    // Radius: 20-45% from center
-    const radius = 20 + rng() * 25;
-
-    const x = clamp(centerX + Math.cos(angle) * radius, 5, 95);
-    const y = clamp(centerY + Math.sin(angle) * radius * 0.8, 5, 95);
-
-    const rotation = (rng() - 0.5) * 90; // -45 to +45 degrees
-    const scale = 0.7 + rng() * 0.6; // 0.7 to 1.3
-
-    // Pick a random image from the provided set
-    const image = images[Math.floor(rng() * images.length)];
-
-    items.push({
-      x,
-      y,
-      rotation,
-      scale,
-      image,
-      zIndex: 1 + i, // 1-9, behind flowers
-    });
-  }
-
-  return items;
+  return [
+    {
+      x: 50,
+      y: 50,
+      rotation: 0,
+      scale: 1,
+      image: mainBush,
+      zIndex: 1,
+    },
+  ];
 }

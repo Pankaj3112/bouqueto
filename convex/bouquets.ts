@@ -1,3 +1,4 @@
+import { paginationOptsValidator } from "convex/server";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -33,12 +34,11 @@ export const get = query({
 });
 
 export const listRecent = query({
-  args: { limit: v.optional(v.number()) },
+  args: { paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {
-    const limit = args.limit ?? 20;
     return await ctx.db
       .query("bouquets")
       .order("desc")
-      .take(limit);
+      .paginate(args.paginationOpts);
   },
 });

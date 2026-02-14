@@ -6,18 +6,18 @@ export interface GreenerySet {
 
 export const greenerySets: GreenerySet[] = [
   {
-    id: "tropical",
-    name: "Tropical Leaves",
-    images: ["/greenery/tropical-1.png", "/greenery/tropical-2.png", "/greenery/tropical-3.png"],
+    id: "lush",
+    name: "Lush Greens",
+    images: ["/greenery/bush-1.webp"],
   },
   {
-    id: "ferns",
-    name: "Ferns",
-    images: ["/greenery/fern-1.png", "/greenery/fern-2.png", "/greenery/fern-3.png"],
+    id: "minimal",
+    name: "Minimal",
+    images: ["/greenery/bush-1.webp"],
   },
   {
-    id: "eucalyptus",
-    name: "Eucalyptus",
-    images: ["/greenery/eucalyptus-1.png", "/greenery/eucalyptus-2.png", "/greenery/eucalyptus-3.png"],
+    id: "wild",
+    name: "Wild Garden",
+    images: ["/greenery/bush-1.webp"],
   },
 ];

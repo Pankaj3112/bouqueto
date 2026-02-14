@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useQuery } from "convex/react";
+import { usePaginatedQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import BouquetComposition from "@/components/BouquetComposition";
 import type { ArrangementItem } from "@/lib/arrangement";
@@ -78,7 +78,11 @@ function BouquetCard({
 }
 
 export default function GardenPage() {
-  const bouquets = useQuery(api.bouquets.listRecent, { limit: 20 });
+  const { results, status, loadMore } = usePaginatedQuery(
+    api.bouquets.listRecent,
+    {},
+    { initialNumItems: 20 },
+  );
 
   return (
     <>
@@ -159,18 +163,18 @@ export default function GardenPage() {
             </p>
 
             {/* Bouquet count badge */}
-            {bouquets && bouquets.length > 0 && (
+            {results.length > 0 && (
               <div className="mt-6 inline-flex items-center gap-2 border border-charcoal/[0.08] px-4 py-1.5">
                 <span className="block h-1.5 w-1.5 rounded-full bg-charcoal/20" />
                 <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-charcoal/35">
-                  {bouquets.length} {bouquets.length === 1 ? "Bouquet" : "Bouquets"}
+                  {results.length} {results.length === 1 ? "Bouquet" : "Bouquets"}
                 </span>
               </div>
             )}
           </header>
 
           {/* Loading state */}
-          {bouquets === undefined && (
+          {status === "LoadingFirstPage" && (
             <div className="flex flex-col items-center justify-center py-24">
               <div className="mb-6 flex gap-1.5">
                 {[0, 1, 2].map((i) => (
@@ -188,7 +192,7 @@ export default function GardenPage() {
           )}
 
           {/* Empty state */}
-          {bouquets !== undefined && bouquets.length === 0 && (
+          {status !== "LoadingFirstPage" && results.length === 0 && (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <svg
                 width="56"
@@ -220,9 +224,9 @@ export default function GardenPage() {
           )}
 
           {/* Bouquet grid */}
-          {bouquets !== undefined && bouquets.length > 0 && (
+          {results.length > 0 && (
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:grid-cols-3">
-              {bouquets.map((bouquet, i) => (
+              {results.map((bouquet, i) => (
                 <BouquetCard key={bouquet._id} bouquet={bouquet} index={i} />
               ))}
             </div>

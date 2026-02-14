@@ -256,7 +256,7 @@ export default function CardWriter({
 
       {/* Mobile: Show flowers in a horizontal row below the card */}
       {(leftFlowers.length > 0 || rightFlowers.length > 0) && (
-        <div className="mt-6 flex items-end justify-center gap-4 md:hidden">
+        <div className="mt-6 flex flex-wrap items-end justify-center gap-4 md:hidden">
           {[...leftFlowers, ...rightFlowers].map((fId, i) => (
             <FlowerOnStem key={`mobile-${fId}-${i}`} flowerId={fId} index={i} />
           ))}

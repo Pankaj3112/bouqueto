@@ -21,7 +21,7 @@ export default function SelectionPills({ selections, onRemove }: SelectionPillsP
             key={flowerId}
             type="button"
             onClick={() => onRemove(flowerId)}
-            className="inline-flex items-center gap-1.5 rounded-full border border-charcoal/30 px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-charcoal transition-all duration-200 hover:border-charcoal hover:bg-charcoal hover:text-cream"
+            className="inline-flex items-center gap-1.5 rounded-full border border-charcoal/30 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.15em] text-charcoal transition-all duration-200 hover:border-charcoal hover:bg-charcoal hover:text-cream"
             aria-label={`Remove one ${flower.name}`}
           >
             <span>{flower.name}</span>

@@ -68,7 +68,7 @@ export default function Home() {
         </h1>
 
         {/* Tagline */}
-        <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.35em] sm:text-xs sm:tracking-[0.4em]">
+        <p className="mt-5 text-center font-mono text-[10px] uppercase tracking-[0.2em] sm:text-xs sm:tracking-[0.4em]">
           Beautiful Flowers, Delivered Digitally
         </p>
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import ConvexClientProvider from "./ConvexClientProvider";
 
@@ -29,6 +30,7 @@ export default function RootLayout({
         className={`${playfairDisplay.variable} ${jetbrainsMono.variable} bg-cream text-charcoal antialiased`}
       >
         <ConvexClientProvider>{children}</ConvexClientProvider>
+        <Analytics />
       </body>
     </html>
   );

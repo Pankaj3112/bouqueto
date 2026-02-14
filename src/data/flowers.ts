@@ -20,6 +20,7 @@ export const flowers: Flower[] = [
   { id: "daisy", name: "Daisy", meaning: "Innocence", birthMonth: "February", image: "/flowers/daisy.webp", displaySize: 120 },
   { id: "carnation", name: "Carnation", meaning: "Fascination", birthMonth: "September", image: "/flowers/carnation.webp", displaySize: 160 },
   { id: "ranunculus", name: "Ranunculus", meaning: "Charm", birthMonth: "December", image: "/flowers/ranunculus.webp", displaySize: 120 },
+  { id: "marigold", name: "Marigold", meaning: "Warmth", birthMonth: "October", image: "/flowers/marigold.webp", displaySize: 120 },
 ];
 
 export function getFlowerById(id: string): Flower | undefined {

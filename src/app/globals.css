@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-cream: #F5F0E8;
+  --color-charcoal: #2A2A2A;
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}

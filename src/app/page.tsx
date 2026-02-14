@@ -1,65 +1,111 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="flex min-h-svh flex-col items-center justify-between bg-cream text-charcoal">
+      {/* Decorative top border — diagonal candy-stripe bar */}
+      <div
+        className="h-2 w-full"
+        style={{
+          background:
+            "repeating-linear-gradient(135deg, #2A2A2A 0px, #2A2A2A 6px, #F5F0E8 6px, #F5F0E8 12px)",
+        }}
+      />
+
+      {/* Main content — vertically and horizontally centered */}
+      <main className="flex flex-1 flex-col items-center justify-center px-6 py-16">
+        {/* Decorative floral element */}
+        <div className="mb-8 flex items-center gap-3" aria-hidden="true">
+          <span className="block h-px w-10 bg-charcoal/30 sm:w-16" />
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            className="text-charcoal/60"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            {/* Simple stylized flower: five petals around a center */}
+            <ellipse
+              cx="14"
+              cy="8"
+              rx="3.5"
+              ry="6"
+              fill="currentColor"
+              opacity="0.25"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <ellipse
+              cx="14"
+              cy="20"
+              rx="3.5"
+              ry="6"
+              fill="currentColor"
+              opacity="0.25"
+            />
+            <ellipse
+              cx="8"
+              cy="14"
+              rx="6"
+              ry="3.5"
+              fill="currentColor"
+              opacity="0.25"
+            />
+            <ellipse
+              cx="20"
+              cy="14"
+              rx="6"
+              ry="3.5"
+              fill="currentColor"
+              opacity="0.25"
+            />
+            <circle cx="14" cy="14" r="3" fill="currentColor" opacity="0.45" />
+          </svg>
+          <span className="block h-px w-10 bg-charcoal/30 sm:w-16" />
         </div>
+
+        {/* Logo */}
+        <h1 className="font-display text-6xl leading-tight tracking-tight sm:text-7xl md:text-8xl">
+          Bouqueto
+        </h1>
+
+        {/* Tagline */}
+        <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.35em] sm:text-xs sm:tracking-[0.4em]">
+          Beautiful Flowers, Delivered Digitally
+        </p>
+
+        {/* CTAs */}
+        <div className="mt-14 flex w-full max-w-xs flex-col items-center gap-4 sm:mt-16">
+          {/* Primary CTA */}
+          <Link
+            href="/bouquet"
+            className="block w-full bg-charcoal py-4 text-center font-mono text-xs uppercase tracking-[0.3em] text-cream transition-opacity duration-200 hover:opacity-80"
+          >
+            Build a Bouquet
+          </Link>
+
+          {/* Secondary CTA */}
+          <Link
+            href="/bouquet"
+            className="block w-full border-2 border-charcoal bg-transparent py-4 text-center font-mono text-xs uppercase tracking-[0.3em] text-charcoal transition-colors duration-200 hover:bg-charcoal hover:text-cream"
+          >
+            Build It in Black &amp; White
+          </Link>
+        </div>
+
+        {/* View Garden link */}
+        <Link
+          href="/garden"
+          className="mt-10 font-mono text-xs uppercase tracking-[0.3em] text-charcoal underline underline-offset-4 transition-opacity duration-200 hover:opacity-60"
+        >
+          View Garden
+        </Link>
       </main>
+
+      {/* Footer */}
+      <footer className="pb-6 pt-8">
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-charcoal/50">
+          Made by @pankajbeniwal
+        </p>
+      </footer>
     </div>
   );
 }
